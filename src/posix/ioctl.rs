@@ -116,7 +116,7 @@ pub fn tiocnxcl(fd: RawFd) -> Result<()> {
 }
 
 pub fn tiocmget(fd: RawFd) -> Result<SerialLines> {
-    let mut status = unsafe { mem::uninitialized() };
+    let mut status = unsafe { mem::MaybeUninit::uninit().assume_init() };
     let x = unsafe { raw::tiocmget(fd, &mut status) };
     x.map(SerialLines::from_bits_truncate).map_err(|e| e.into())
 }
